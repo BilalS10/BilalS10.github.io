@@ -46,9 +46,9 @@ const noVideoTimeoutMS = 5000; // Error alert if the video fails to connect
 
 // Xirsys API Info, not required for WebRTC, but it helps
 // Xirsys Network access tokens are issued via this PubNub Function
-const turnApiUrl = 'https://pubsub.pubnub.com/v1/blocks/sub-key/sub-c-b81f9060-a3a8-11e9-933c-ba576251120f/stun:bturn2.xirsys.com';
+const turnApiUrl = 'https://pubsub.pubnub.com/v1/blocks/sub-key/sub-c-b81f9060-a3a8-11e9-933c-ba576251120f/stun:bturn2.xirsys.com"';
 let turnToken;
-request(turnApiUrl, 'GET').then((response) => { turnToken = response });
+request(turnApiUrl, 'GET').then((response) => { turnToken = response; console.log(turnToken) });
 
 // Init the audio and video stream on this client
 getLocalStream().then((localMediaStream) => {
@@ -167,6 +167,7 @@ const initWebRtcApp = () => {
                     request(turnApiUrl, 'PUT', {
                         'headers': { 'tok': turnToken }
                     }).then((response) => {
+                        console.log('received token')
                         rtcConfig.iceServers = [response];
                         webRtcPhone.callUser(userToCall, {
                             myStream: myAudioVideoStream
